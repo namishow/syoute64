@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本史探究 小テスト：初期議会と条約改正</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col justify-between min-h-screen p-3 md:p-6">
+
+    <!-- Header -->
+    <header class="max-w-3xl mx-auto w-full text-center my-3">
+        <div class="inline-flex items-center gap-1.5 bg-amber-400 text-amber-950 text-xs font-extrabold px-3 py-1 rounded-full mb-2 shadow">
+            <i class="fa-solid fa-graduation-cap"></i> 高校日本史探究 プリントNo.64 完全網羅
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-wide shadow-text flex items-center justify-center gap-2">
+            <span>アジア・太平洋戦争</span>
+        </h1>
+        <p class="text-indigo-200 text-xs md:text-sm mt-1">日独伊三国同盟・新体制運動から真珠湾攻撃、学徒出陣、ポツダム宣言受諾まで完全攻略！</p>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-2xl mx-auto w-full flex-grow flex items-center justify-center">
+
+        <!-- START SCREEN -->
+        <div id="start-screen" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl w-full text-center transition-all duration-300">
+            <div class="text-5xl text-amber-500 mb-3">
+                <i class="fa-solid fa-plane-departure"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gray-800 mb-2">日本史一問一答クイズ</h2>
+            <p class="text-gray-600 text-xs md:text-sm mb-5 leading-relaxed">
+                全16問の4択形式問題です。<br>
+                平沼騏一郎内閣（「欧州情勢は複雑怪奇」）、新体制運動（大政翼賛会・大日本産業報国会）、日独伊三国同盟・日ソ中立条約、南部仏印進駐・ABCD包囲陣、東条英機内閣（ハル＝ノート・太平洋戦争開戦）、学徒出陣・女子挺身隊、沖縄戦・原爆投下・ポツダム宣言受諾（鈴木貫太郎内閣）を徹底網羅！
+            </p>
+
+            <div class="bg-indigo-50/80 rounded-2xl p-4 mb-6 text-left border border-indigo-100">
+                <h3 class="font-bold text-indigo-900 text-xs md:text-sm mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-amber-500"></i> このクイズの特徴
+                </h3>
+                <ul class="text-xs text-indigo-800 space-y-1.5">
+                    <li><i class="fa-solid fa-check text-green-500 mr-1"></i> 正解・不正解の和風効果音（BGM/SE）付き</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-1"></i> 選択肢の答えの番号は完全均等（1~4各4問ずつ）</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-1"></i> アジア・太平洋戦争の要点カード搭載</li>
+                </ul>
+            </div>
+
+            <button onclick="startQuiz()" class="pulse-animation w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-lg py-3.5 px-8 rounded-2xl shadow-lg hover:shadow-indigo-500/50 transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play"></i> テストを開始する！
+            </button>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="glass-card rounded-3xl p-5 md:p-7 shadow-2xl w-full hidden transition-all duration-300">
+            <!-- Progress & Stats -->
+            <div class="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">
+                <div class="flex items-center gap-2">
+                    <span id="question-number" class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full">Q.1 / 16</span>
+                    <span id="combo-badge" class="hidden bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-bounce">
+                        <i class="fa-solid fa-fire"></i> <span id="combo-count">0</span> コンボ!
+                    </span>
+                </div>
+                <div class="text-sm font-bold text-gray-600">
+                    スコア: <span id="current-score" class="text-indigo-600 font-black text-lg">0</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-5 overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-5">
+                <span id="question-category" class="text-xs font-bold text-indigo-600 tracking-wider uppercase">アジア・太平洋戦争 (No.64)</span>
+                <h3 id="question-text" class="text-base md:text-lg font-bold text-gray-800 mt-1 leading-snug">
+                    問題文がここに入ります。
+                </h3>
+            </div>
+
+            <!-- Options -->
+            <div id="options-container" class="space-y-2.5 mb-5">
+                <!-- Option buttons generated by JS -->
+            </div>
+
+            <!-- Feedback Area (Explanation) -->
+            <div id="explanation-card" class="hidden bg-slate-800 text-white rounded-2xl p-4 mb-4 border border-slate-700 animate-fade-in">
+                <div class="flex items-center gap-2 mb-1">
+                    <span id="result-icon" class="text-xl"></span>
+                    <h4 id="result-text" class="font-extrabold text-sm md:text-base">正解！</h4>
+                </div>
+                <p id="explanation-text" class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    解説文がここに入ります。
+                </p>
+            </div>
+
+            <!-- Next Button -->
+            <button id="next-btn" onclick="nextQuestion()" class="hidden w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl shadow transition-all flex items-center justify-center gap-2">
+                次へ進む <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl w-full text-center hidden transition-all duration-300">
+            <div id="result-badge" class="inline-block p-4 rounded-full bg-amber-100 text-amber-500 text-4xl mb-3 shadow-inner">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gray-800 mb-1">テスト結果</h2>
+            <p id="result-rank" class="text-xs md:text-sm font-bold text-indigo-600 mb-4">ランク判定中...</p>
+
+            <div class="bg-indigo-50/80 rounded-2xl p-5 mb-5">
+                <div class="text-xs text-indigo-600 font-bold uppercase tracking-wider mb-1">最終スコア</div>
+                <div class="text-4xl md:text-5xl font-black text-indigo-900 mb-1">
+                    <span id="final-score">0</span> <span class="text-base font-normal text-indigo-700">/ 100 点</span>
+                </div>
+                <p id="correct-count-text" class="text-xs text-indigo-800">16問中 0問 正解</p>
+            </div>
+
+            <div id="result-comment" class="bg-white p-4 rounded-xl border border-gray-200 text-xs md:text-sm text-gray-700 mb-5 text-left leading-relaxed">
+                コメント
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2.5">
+                <button onclick="startQuiz()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-rotate-right"></i> もう一度挑戦
+                </button>
+                <button onclick="toggleMnemonicsModal()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-white font-bold py-3 px-4 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-lightbulb"></i> アジア・太平洋戦争要点整理
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Mnemonics Modal (暗記ポイント) -->
+    <div id="mnemonics-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto">
+            <button onclick="toggleMnemonicsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-black text-gray-800 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-key text-amber-500"></i> アジア・太平洋戦争の要点まとめ
+            </h3>
+            <p class="text-xs text-gray-500 mb-4">プリントNo.64の最重要ポイントカード！</p>
+
+            <div class="space-y-2.5 text-xs text-gray-700">
+                <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
+                    <span class="font-bold text-amber-900 block mb-1">🤝 近衛新体制と枢軸の結成（1940〜1941）：</span>
+                    <ul class="list-disc list-inside space-y-1 text-amber-950">
+                        <li><b>第2次近衛文麿内閣</b>：政党解散 $\rightarrow$ <b>大政翼賛会</b>、労働組合解散 $\rightarrow$ <b>大日本産業報国会</b>。下部組織に町内会・隣組。</li>
+                        <li><b>国民学校令（1941）</b>：小学校を「国民学校」と改称。</li>
+                        <li><b>日独伊三国同盟（1940）</b> / <b>日ソ中立条約（1941・松岡洋右外相）</b>。</li>
+                        <li><b>南部仏印進駐（1941）</b> $\rightarrow$ 米国による対日<b>石油全面輸出禁止</b>（ABCD包囲陣）。</li>
+                    </ul>
+                </div>
+                <div class="p-2.5 bg-indigo-50 rounded-xl border border-indigo-200">
+                    <span class="font-bold text-indigo-900 block mb-1">💣 太平洋戦争の開戦と動員：</span>
+                    <ul class="list-disc list-inside space-y-1 text-indigo-950">
+                        <li><b>東条英機内閣</b>：米国ハル＝ノート提出 $\rightarrow$ <b>1941年12月8日</b>真珠湾奇襲＆マレー半島上陸で開戦。</li>
+                        <li><b>ミッドウェー海戦（1942.6）</b>：敗北により戦局が悪化へ。</li>
+                        <li><b>動員体制</b>：<b>学徒出陣</b>（文科系学生の徴兵）、<b>女子挺身隊</b>、<b>学童疎開</b>、食糧管理法（1942年・米の国家管理）。</li>
+                    </ul>
+                </div>
+                <div class="p-2.5 bg-rose-50 rounded-xl border border-rose-200">
+                    <span class="font-bold text-rose-900 block mb-1">🕊️ 終戦への道のり（1945）：</span>
+                    <ul class="list-disc list-inside space-y-1 text-rose-950">
+                        <li><b>内閣の推移</b>：東条英機 $\rightarrow$ 小磯国昭（サイパン陥落後） $\rightarrow$ <b>鈴木貫太郎</b>（沖縄戦後）。</li>
+                        <li><b>ポツダム宣言受諾</b>：8/6広島原爆 $\rightarrow$ 8/8ソ連参戦 $\rightarrow$ 8/9長崎原爆 $\rightarrow$ 8/14宣言受諾 $\rightarrow$ 8/15玉音放送。</li>
+                        <li><b>東久邇宮稔彦内閣</b>：初の皇族内閣、9/2降伏文書調印。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button onclick="toggleMnemonicsModal()" class="w-full mt-5 bg-slate-800 text-white font-bold py-2.5 rounded-xl text-sm">
+                閉じる
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Sound & Quiz Logic -->
+    <script>
+        // ... existing SoundSystem code ...
+
+        // ==========================================
+        // Quiz Data (16 Questions - Balanced Answers 1-4: 4 of each)
+        // Correct answers distribution:
+        // Option 0 (1番) -> 4件 [Q1, Q5, Q9, Q13]
+        // Option 1 (2番) -> 4件 [Q2, Q6, Q10, Q14]
+        // Option 2 (3番) -> 4件 [Q3, Q7, Q11, Q15]
+        // Option 3 (4番) -> 4件 [Q4, Q8, Q12, Q16]
+        // ==========================================
+        const quizData = [
+            // Q1: 正解 = 1番 (index 0)
+            {
+                category: "1. 欧州情勢と内閣 (No.64)",
+                question: "1939年、独ソ不可侵条約が電撃的に締結された際、「欧州情勢は複雑怪奇」との声明を出して総辞職した首相はだれか？",
+                options: [
+                    "平沼騏一郎",
+                    "阿部信行",
+                    "米内光政",
+                    "広田弘毅"
+                ],
+                answer: 0,
+                explanation: "ノモンハン事件中に独ソ不可侵条約が結ばれ、同盟交渉を行っていた平沼騏一郎内閣は「欧州の情勢は複雑怪奇」と述べて総辞職しました。"
+            },
+            // Q2: 正解 = 2番 (index 1)
+            {
+                category: "2. 新体制運動と政党解散 (No.64)",
+                question: "1940年、第2次近衛文麿内閣の下で既存の政党がすべて解散し、全国民を統合する上意下達の官製統制組織として結成された団体は何か？",
+                options: [
+                    "大日本産業報国会",
+                    "大政翼賛会",
+                    "大日本翼賛壮年団",
+                    "大日本婦人会"
+                ],
+                answer: 1,
+                explanation: "第2次近衛内閣の新体制運動により全政党が解散し、首相を総裁とする官製国民統制組織「大政翼賛会」が結成されました。"
+            },
+            // Q3: 正解 = 3番 (index 2)
+            {
+                category: "3. 教育と新体制 (No.64)",
+                question: "1941年、皇国臣民の錬成を目的として小学校の名称を変更し、修身・国語・国史などを重視した初等教育機関の名称は何か？",
+                options: [
+                    "尋常小学校",
+                    "高等小学校",
+                    "国民学校",
+                    "青年学校"
+                ],
+                answer: 2,
+                explanation: "1941年の国民学校令により、小学校は「国民学校」と改称され、皇国臣民育成のための錬成教育が行われました。"
+            },
+            // Q4: 正解 = 4番 (index 3)
+            {
+                category: "4. 日ソ中立条約 (No.64)",
+                question: "1941年4月、日本の外務大臣・松岡洋右がモスクワで調印し、相互の領土保全と中立を約束した条約（5年間有効）は何か？",
+                options: [
+                    "日ソ基本条約",
+                    "日独防共協定",
+                    "日独伊三国同盟",
+                    "日ソ中立条約"
+                ],
+                answer: 3,
+                explanation: "外相・松岡洋右は1941年4月にソ連のモロトフ外相らと「日ソ中立条約」を締結しました。"
+            },
+            // Q5: 正解 = 1番 (index 0)
+            {
+                category: "5. 石油禁輸とABCD包囲陣 (No.64)",
+                question: "1941年7月、日本軍が南部仏印（ベトナム南部）へ進駐したのに対し、アメリカがとった最も致命的な経済制裁措置は何か？",
+                options: [
+                    "対日石油の全面輸出禁止",
+                    "対日くず鉄の輸出禁止",
+                    "日米通商航海条約の失効",
+                    "在米邦人資産の凍結解除"
+                ],
+                answer: 0,
+                explanation: "南部仏印進駐を受け、アメリカは日本への「石油全面輸出禁止」を実施し、日本は経済的に追い詰められました（ABCD包囲陣）。"
+            },
+            // Q6: 正解 = 2番 (index 1)
+            {
+                category: "6. 太平洋戦争の開戦 (No.64)",
+                question: "1941年12月8日、東条英機内閣の下で日本軍がアメリカ・イギリスに宣戦布告し太平洋戦争が始まりました。このとき日本海軍が奇襲攻撃した場所はどこか？",
+                options: [
+                    "グアム島",
+                    "ハワイの真珠湾（パールハーバー）",
+                    "ミッドウェー島",
+                    "サイパン島"
+                ],
+                answer: 1,
+                explanation: "1941年12月8日未明、日本海軍がハワイ真珠湾を奇襲（陸軍はマレー半島上陸）し、太平洋戦争が開戦しました。"
+            },
+            // Q7: 正解 = 3番 (index 2)
+            {
+                category: "7. 太平洋戦争の転換点 (No.64)",
+                question: "1942年6月、日本海軍が主力空母4隻を失う大敗を喫し、太平洋戦争の戦局が日本不利へと一変した海戦は何か？",
+                options: [
+                    "珊瑚海海戦",
+                    "ソロモン海戦",
+                    "ミッドウェー海戦",
+                    "レイテ沖海戦"
+                ],
+                answer: 2,
+                explanation: "1942年6月のミッドウェー海戦での大敗により、日本海軍は制空権・制海権を失い始め、戦局は悪化していきました。"
+            },
+            // Q8: 正解 = 4番 (index 3)
+            {
+                category: "8. 戦時下の選挙 (No.64)",
+                question: "1942年4月、東条英機内閣の下で実施され、大政翼賛会の推薦候補が議席の8割以上を占めた衆議院議員総選挙の通称は何か？",
+                options: [
+                    "第1回普通選挙",
+                    "暗黒選挙",
+                    "大同選挙",
+                    "翼賛選挙"
+                ],
+                answer: 3,
+                explanation: "1942年の「翼賛選挙（第21回衆議院議員総選挙）」では、大政翼賛会（翼賛政治体制協議会）の推薦候補が全466議席中381議席を獲得しました。"
+            },
+            // Q9: 正解 = 1番 (index 0)
+            {
+                category: "9. 学生の動員 (No.64)",
+                question: "1943年、戦況の悪化に伴い文科系大学・専門学校生の徴兵延期措置が撤廃され、学生たちが戦場へと送り出された出来事は何か？",
+                options: [
+                    "学徒出陣",
+                    "学童疎開",
+                    "女子挺身隊",
+                    "勤労動員"
+                ],
+                answer: 0,
+                explanation: "兵力不足を補うため、理科系や教員養成系を除く文科系高専・大学生の徴兵猶予が停止され「学徒出陣」が行われました。"
+            },
+            // Q10: 正解 = 2番 (index 1)
+            {
+                category: "10. 食糧の統制 (No.64)",
+                question: "1942年、食糧の需要供給の安定と国家管理を目的として制定され、米などの主要食糧を政府が買い上げて配給する体制を整えた法律は何か？",
+                options: [
+                    "国家総動員法",
+                    "食糧管理法",
+                    "重要産業統制法",
+                    "国民徴用令"
+                ],
+                answer: 1,
+                explanation: "1942年制定の「食糧管理法」に基づき、米などの主食はすべて政府が買い入れて統制配給を行う仕組み（食管制度）が作られました。"
+            },
+            // Q11: 正解 = 3番 (index 2)
+            {
+                category: "11. 児童の安全確保措置 (No.64)",
+                question: "1944年、本土空襲の激化に備えて都市部の国民学校初等科児童を集団で農村部へ移転させた措置は何か？",
+                options: [
+                    "女子挺身",
+                    "勤労奉仕",
+                    "学童疎開",
+                    "女子勤労動員"
+                ],
+                answer: 2,
+                explanation: "1944年から空襲の危険が高い大都市の学童を親元から離して農村部の寺院や旅館へ移動させる「学童疎開」が実施されました。"
+            },
+            // Q12: 正解 = 4番 (index 3)
+            {
+                category: "12. 東条内閣の総辞職の原因 (No.64)",
+                question: "1944年7月、絶対国防圏の一角が崩れ、米軍による日本本土空襲の拠点とされるに至ったため、東条英機内閣が総辞職する契機となった敗戦地はどこか？",
+                options: [
+                    "ガダルカナル島",
+                    "アッツ島",
+                    "硫黄島",
+                    "サイパン島"
+                ],
+                answer: 3,
+                explanation: "1944年7月の「サイパン島陥落」により、B-29爆撃機による本土空襲が可能となった責任を問い、東条英機内閣は総辞職しました（後任は小磯国昭）。"
+            },
+            // Q13: 正解 = 1番 (index 0)
+            {
+                category: "13. 植民地における同化政策 (No.64)",
+                question: "戦時下の朝鮮や台湾において、神社参拝の強制や日本語教育の徹底とともに、朝鮮人の姓名を日本風に改めさせた強制政策は何か？",
+                options: [
+                    "創氏改名",
+                    "皇国臣民ノ誓詞",
+                    "土地調査事業",
+                    "東洋拓殖事業"
+                ],
+                answer: 0,
+                explanation: "朝鮮では皇民化政策の一環として、1939年の制令により従来の姓名を日本風の氏名に改めさせる「創氏改名」が強制されました。"
+            },
+            // Q14: 正解 = 2番 (index 1)
+            {
+                category: "14. ポツダム宣言受諾時の首相 (No.64)",
+                question: "1945年8月、広島・長崎への原子爆弾投下およびソ連の対日参戦を受け、ポツダム宣言受諾の聖断を仰いで降伏を決定した内閣の首相はだれか？",
+                options: [
+                    "小磯国昭",
+                    "鈴木貫太郎",
+                    "東久邇宮稔彦",
+                    "幣原喜重郎"
+                ],
+                answer: 1,
+                explanation: "1945年4月に就任した鈴木貫太郎首相は、最高戦争指導会議や御前会議を経て8月14日にポツダム宣言受諾（受諾通知）を決定しました。"
+            },
+            // Q15: 正解 = 3番 (index 2)
+            {
+                category: "15. 玉音放送と終戦 (No.64)",
+                question: "昭和天皇による「終戦の詔勅」のラジオ放送（玉音放送）が行われ、国民に敗戦が告げられた日付はいつか？",
+                options: [
+                    "1945年8月6日",
+                    "1945年8月9日",
+                    "1945年8月15日",
+                    "1945年9月2日"
+                ],
+                answer: 2,
+                explanation: "1945年8月15日正午、昭和天皇の玉音放送によってポツダム宣言受諾（終戦）が全国民へ告知されました。"
+            },
+            // Q16: 正解 = 4番 (index 3)
+            {
+                category: "16. 降伏文書調印内閣 (No.64)",
+                question: "1945年9月2日、米戦艦ミズーリ号上で降伏文書への調印を行った、日本史上唯一の「皇族内閣」の首相はだれか？",
+                options: [
+                    "近衛文麿",
+                    "鈴木貫太郎",
+                    "幣原喜重郎",
+                    "東久邇宮稔彦"
+                ],
+                answer: 3,
+                explanation: "終戦後の混乱を終息させるため成立した初の皇族内閣「東久邇宮稔彦（ひがしくにのみやなるひこ）内閣」が1945年9月2日に降伏文書調印を行いました。"
+            }
+        ];
+
+        // ... existing script logic ...
+        function showResult() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            sound.playFinish();
+
+            const finalScoreEl = document.getElementById('final-score');
+            const correctCountText = document.getElementById('correct-count-text');
+            const resultRank = document.getElementById('result-rank');
+            const resultComment = document.getElementById('result-comment');
+            const resultBadge = document.getElementById('result-badge');
+
+            const calculatedScore = Math.min(100, Math.round((correctNum / quizData.length) * 100));
+            finalScoreEl.textContent = calculatedScore;
+            correctCountText.textContent = `${quizData.length}問中 ${correctNum}問 正解`;
+
+            if (calculatedScore === 100) {
+                resultRank.textContent = "🏆 ランク：太平洋戦争・近代史マスター（SS級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-amber-100 text-amber-500 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>パーフェクト達成！</strong><br>平沼内閣の不可侵条約から新体制運動、太平洋戦争の経過、学徒出陣、終戦のプロセスまで完璧です！`;
+            } else if (calculatedScore >= 80) {
+                resultRank.textContent = "🥇 ランク：大政翼賛級 エリート（A級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-indigo-100 text-indigo-600 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>素晴らしい高得点！</strong><br>日独伊三国同盟やハル＝ノート、戦時動員体制の知識がしっかり身につなっています！`;
+            } else if (calculatedScore >= 50) {
+                resultRank.textContent = "🥈 ランク：戦時動員達成組（B級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-slate-100 text-slate-600 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>合格点クリア！</strong><br>内閣の交代（近衛 $\\rightarrow$ 東条 $\\rightarrow$ 小磯 $\\rightarrow$ 鈴木 $\\rightarrow$ 東久邇宮）の流れを要点カードで整理しよう！`;
+            } else {
+                resultRank.textContent = "🥉 ランク：要復習！アジア・太平洋戦争（C級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-rose-100 text-rose-500 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>伸びしろ十分！</strong><br>授業プリントNo.64の流れを見直し、太平洋戦争の開戦から受諾までの経過を再確認しよう！`;
+            }
+        }
+    </script>
+</body>
+</html>
